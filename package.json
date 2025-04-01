@@ -1,5 +1,6 @@
 {
-  "name": "progress-app",
+  "name": "berry-dial",
+  "homepage": "https://berrydial.github.io/BerryDial",
   "private": true,
   "version": "0.0.0",
   "type": "module",
