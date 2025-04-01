@@ -12,7 +12,7 @@ const LandingPage = () => {
   const handleCallClick = async () => {
     if (isMobile) {
       // For mobile devices, redirect to phone dialer
-      window.location.href = "tel:6923888";
+      window.location.href = "tel:+19205480657";
       return;
     }
 
@@ -35,7 +35,7 @@ const LandingPage = () => {
         setCallStatus("Call failed to connect. Please try again.");
       }
     } catch (error) {
-    //   console.error("Error making API call: ", error);
+      //   console.error("Error making API call: ", error);
       setCallStatus("Call failed. Please check your connection and try again.");
     } finally {
       setIsCallInProgress(false);
@@ -85,13 +85,14 @@ const LandingPage = () => {
                 verticalAlign: "middle",
               }}
             >
-              (6*9) 23*-88*3
+              +1(920)548-0657 
             </span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
             <button
-              className={`flex items-center gap-2 py-3 px-6 rounded-md text-white text-base lg:text-xl transition-all duration-300 ease-in-out ${
+              className={`flex items-center gap-2 py-3 px-6 rounded-md text-white text-base 
+                lg:text-xl transition-all duration-300 ease-in-out ${
                 isCallInProgress
                   ? "bg-blue-600 cursor-wait"
                   : "bg-[#2D36D5] hover:bg-[#2D36D5]/80 hover:shadow-lg"

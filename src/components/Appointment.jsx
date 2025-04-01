@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaCircleUser,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa6";
+import { FaCircleUser, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { FaVolumeMute, FaCalendar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
