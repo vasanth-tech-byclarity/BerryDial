@@ -14,7 +14,7 @@
 
 // export default App
 
-
+// ✅
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginForm from "./components/Login";
@@ -24,13 +24,13 @@ import "./App.css";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/BerryDial">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/appointment" element={<Appointment />} />
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
   );
 }
 
