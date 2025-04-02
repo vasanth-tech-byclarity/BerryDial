@@ -87,7 +87,7 @@ const LandingPage = () => {
 
         <div className="relative flex flex-col justify-center items-center min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] p-4">
           <div className="my-4 sm:my-6">
-            <span className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className=" text-[#111827] font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
               {formattedPhoneNumber}
             </span>
           </div>
