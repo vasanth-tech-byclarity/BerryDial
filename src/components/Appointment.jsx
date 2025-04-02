@@ -350,7 +350,7 @@ const Appointment = () => {
                           <div className="flex justify-between items-center mb-2">
                             <h3 className="text-lg font-semibold">Summary Details</h3>
                           </div>
-                          <div className="bg-white pb-4 rounded-lg shadow">
+                          <div className="bg-white pb-4 rounded-lg">
                           <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
                               {conversation.summary}
                             </p>

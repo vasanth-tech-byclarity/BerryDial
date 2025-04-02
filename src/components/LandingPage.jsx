@@ -13,55 +13,59 @@ const LandingPage = () => {
 
   const handleCallClick = async () => {
     if (isMobile) {
-      console.log("Redirecting to dialer...");
+      // For mobile devices, redirect to phone dialer
       window.location.href = `tel:${phoneNumber}`;
       return;
     }
-    try {
-      setIsCallInProgress(true);
 
-      console.log("Making API call...");
-      const response = await axios.post(
-        "http://15.207.173.143/twilio/inbound_call"
-      );
-
-      console.log("API Response:", response);
-
-      if (response.status === 200) {
-        // setCallStatus("Call connected successfully!");
-        openAppSelector();
-      } else {
-        setCallStatus("Call failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error making API call:", error);
-      setCallStatus("Call failed. Check your connection and try again.");
-    } finally {
-      setIsCallInProgress(false);
-    }
-  };
-
-  const openAppSelector = () => {
-    const appChoice = window.confirm(
-      "Choose your calling app:\n1. Microsoft Teams\n2. Zoom\n3. Skype\n\nClick OK to open Microsoft Teams, Cancel for Zoom, or type Skype for Skype."
+    // For desktop, show professional call options
+    const callChoice = window.confirm(
+      "Please select your preferred calling method:\n\nClick 'OK' for Browser-based Call (Recommended)\nClick 'Cancel' for External Applications"
     );
 
-    if (appChoice) {
-      window.location.href = `msteams:/l/call/0/${phoneNumber}`;
+    if (callChoice) {
+      // Browser-based call
+      try {
+        setIsCallInProgress(true);
+        const response = await axios.post(
+          "http://15.207.173.143/twilio/inbound_call"
+        );
+
+        if (response.status === 200) {
+          // setCallStatus("Connecting your call...");
+        } else {
+          setCallStatus("Call failed. Please try again.");
+        }
+      } catch (error) {
+        // console.error("Error initiating call:", error);
+        setCallStatus("Call failed. Please check your connection and try again.");
+      } finally {
+        setIsCallInProgress(false);
+      }
     } else {
-      const skypeChoice = window.prompt(
-        "Enter 'Skype' to open Skype directly:"
+      // External applications
+      const appChoice = window.prompt(
+        "Please choose your preferred application:\n\n1. Microsoft Teams\n2. Zoom\n3. Skype\n\nEnter the number of your choice (1-3):"
       );
-      if (skypeChoice === "Skype") {
-        window.location.href = `skype:${phoneNumber}?call`;
-      } else {
-        window.location.href = "https://zoom.us";
+
+      switch (appChoice) {
+        case "1":
+          window.location.href = `msteams:/l/call/0/${phoneNumber}`;
+          break;
+        case "2":
+          window.location.href = "https://zoom.us";
+          break;
+        case "3":
+          window.location.href = `skype:${phoneNumber}?call`;
+          break;
+        default:
+          // setCallStatus("Invalid selection. Please try again.");
       }
     }
   };
 
   useEffect(() => {
-    console.log("Call Status Updated:", callStatus);
+    // console.log("Call Status Updated:", callStatus);
   }, [callStatus]);
 
   return (
