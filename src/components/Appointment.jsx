@@ -8,6 +8,7 @@ const Appointment = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [selectedTranscript, setSelectedTranscript] = useState(null);
+  const [selectedSummary, setSelectedSummary] = useState(null);
   const [appointmentStatuses, setAppointmentStatuses] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
@@ -130,6 +131,10 @@ const Appointment = () => {
     setSelectedTranscript(selectedTranscript === index ? null : index);
   };
 
+  const toggleSummary = (index) => {
+    setSelectedSummary(selectedSummary === index ? null : index);
+  };
+
   const generateCalendarDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -250,67 +255,68 @@ const Appointment = () => {
 
         {/* Table */}
         <div className="bg-white shadow-md rounded-lg overflow-x-auto">
-          <table className="w-full table-auto">
-            <thead className="bg-gray-200 text-gray-600">
+          <table className="w-full table-auto border-collapse">
+            <thead className="bg-[#F9F9FB] text-gray-600">
               <tr>
-                <th className="p-3 text-left text-xs sm:text-lg">Name</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Phone</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Mail</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Reason</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Gender</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Age</th>
-                <th className="p-3 text-left text-xs sm:text-lg">City</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Zip</th>
-                <th className="p-3 text-left text-xs sm:text-lg">History</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Date</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Time</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Referral</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Status</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Transcript</th>
-                <th className="p-3 text-left text-xs sm:text-lg">Audio</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Name</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Phone</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Mail</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Reason</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Gender</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Age</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">City</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Zip</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">History</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Date</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Time</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Referral</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Status</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Transcript</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Summary</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Audio</th>
               </tr>
             </thead>
             <tbody>
               {currentRows.map((conversation, index) => (
                 <React.Fragment key={`conversation-${index}`}>
                   <tr className="hover:bg-[#EBF0FA] cursor-pointer">
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.name}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.phone}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.email}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.reason}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.gender}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.age}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.city}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.zip}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.history}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.app_date}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.app_time}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       {conversation.referral}
                     </td>
-                    <td className="p-3 text-sm sm:text-base whitespace-nowrap">
+                    <td className="p-3 text-sm sm:text-base whitespace-nowrap border border-[#DDDDDD]">
                       <span
                         className={`px-2 py-1 rounded ${
                           appointmentStatuses[conversation.conversation_id] ===
@@ -323,7 +329,7 @@ const Appointment = () => {
                           "N/A"}
                       </span>
                     </td>
-                    <td className="p-3 text-sm sm:text-base">
+                    <td className="p-3 text-sm sm:text-base border border-[#DDDDDD]">
                       <button
                         onClick={() => toggleTranscript(index)}
                         className="px-2 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition duration-200"
@@ -331,7 +337,15 @@ const Appointment = () => {
                         {selectedTranscript === index ? "Close" : "View"}
                       </button>
                     </td>
-                    <td className="py-3 text-sm sm:text-base">
+                    <td className="p-3 text-sm sm:text-base border border-[#DDDDDD]">
+                      <button
+                        onClick={() => toggleSummary(index)}
+                        className="px-2 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition duration-200"
+                      >
+                        {selectedSummary === index ? "Close" : "View"}
+                      </button>
+                    </td>
+                    <td className="py-3 text-sm sm:text-base border border-[#DDDDDD]">
                       <div className="flex justify-start items-start gap-2">
                         <audio controls className="h-8 w-32">
                           <source
@@ -344,20 +358,29 @@ const Appointment = () => {
                   </tr>
                   {selectedTranscript === index && (
                     <tr key={`transcript-${index}`}>
-                      <td colSpan="15" className="bg-gray-50 p-4">
+                      <td colSpan="15" className="bg-gray-50 p-4 border border-[#DDDDDD]">
                         <div className="space-y-3">
                           <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Conversation Details</h3>
+                            <h3 className="text-lg font-semibold">Transcript Details</h3>
                           </div>
                           <div className="bg-white p-4 rounded-lg shadow">
-                            <h4 className="font-medium mb-2">Transcript:</h4>
                             <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line">
                               {conversation.transcript}
                             </p>
                           </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  {selectedSummary === index && (
+                    <tr key={`summary-${index}`}>
+                      <td colSpan="15" className="bg-gray-50 p-4 border border-[#DDDDDD]">
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="text-lg font-semibold">Summary Details</h3>
+                          </div>
                           <div className="bg-white p-4 rounded-lg shadow">
-                            <h4 className="font-medium mb-2">Summary:</h4>
-                            <p className="text-xs sm:text-sm text-gray-600">
+                            <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line">
                               {conversation.summary}
                             </p>
                           </div>
