@@ -232,69 +232,6 @@ const Appointment = () => {
 
         <div className="flex items-center justify-between">
           <p className="text-sm sm:text-lg">Appointment Demo</p>
-          <div className="flex items-center justify-center sm:justify-end space-x-2">
-            <FaChevronLeft
-              className="cursor-pointer text-gray-600 hover:text-gray-800 text-sm sm:text-base"
-              onClick={handlePrevMonth}
-            />
-            <div className="relative calendar-trigger">
-              <span
-                className="text-gray-500 cursor-pointer text-sm sm:text-lg"
-                onClick={toggleCalendar}
-              >
-                {updateCurrentDateDisplay()}
-              </span>
-              <FaCalendar
-                className="text-gray-600 cursor-pointer ml-2 inline text-sm sm:text-base"
-                onClick={toggleCalendar}
-              />
-              {showCalendar && (
-                <div
-                  id="calendar-popup"
-                  className="absolute right-0 mt-2 bg-white rounded-lg shadow-lg p-4 sm:p-6 z-50 w-64 sm:w-72"
-                  style={{ transform: "translateX(10%)" }}
-                >
-                  <div className="flex justify-between items-center mb-4 ">
-                    <button
-                      className="text-gray-600 hover:text-gray-800 p-2"
-                      onClick={handlePrevMonth}
-                    >
-                      <FaChevronLeft />
-                    </button>
-                    <span className="font-semibold text-sm sm:text-lg whitespace-nowrap">
-                      {currentDate.toLocaleDateString("en-US", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                    <button
-                      className="text-gray-600 hover:text-gray-800 p-2"
-                      onClick={handleNextMonth}
-                    >
-                      <FaChevronRight />
-                    </button>
-                  </div>
-                  <div className="grid grid-cols-7 gap-1 text-center mb-2">
-                    {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                      <div
-                        key={day}
-                        className="text-gray-500 font-medium text-xs sm:text-lg"
-                      >
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-7 gap-1 text-center text-xs sm:text-base">
-                    {generateCalendarDays()}
-                  </div>
-                </div>
-              )}
-            </div>
-            <FaChevronRight
-              className="cursor-pointer text-gray-600 hover:text-gray-800 text-sm sm:text-base"
-              onClick={handleNextMonth}
-            />
-          </div>
         </div>
         <div className="my-4 pb-2">
           <p className="text-[#ABACBE] text-sm sm:text-lg">
@@ -391,7 +328,7 @@ const Appointment = () => {
                         onClick={() => toggleTranscript(index)}
                         className="px-2 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition duration-200"
                       >
-                        View
+                        {selectedTranscript === index ? "Close" : "View"}
                       </button>
                     </td>
                     <td className="py-3 text-sm sm:text-base">
@@ -409,13 +346,18 @@ const Appointment = () => {
                     <tr key={`transcript-${index}`}>
                       <td colSpan="15" className="bg-gray-50 p-4">
                         <div className="space-y-3">
-                          <div>
-                            <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line text-center">
+                          <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-semibold">Conversation Details</h3>
+                          </div>
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-medium mb-2">Transcript:</h4>
+                            <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line">
                               {conversation.transcript}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-xs sm:text-sm text-gray-600 text-center">
+                          <div className="bg-white p-4 rounded-lg shadow">
+                            <h4 className="font-medium mb-2">Summary:</h4>
+                            <p className="text-xs sm:text-sm text-gray-600">
                               {conversation.summary}
                             </p>
                           </div>
