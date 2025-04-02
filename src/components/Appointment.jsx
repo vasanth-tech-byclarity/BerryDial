@@ -8,7 +8,6 @@ const Appointment = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [selectedTranscript, setSelectedTranscript] = useState(null);
-  const [selectedSummary, setSelectedSummary] = useState(null);
   const [appointmentStatuses, setAppointmentStatuses] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
@@ -131,9 +130,6 @@ const Appointment = () => {
     setSelectedTranscript(selectedTranscript === index ? null : index);
   };
 
-  const toggleSummary = (index) => {
-    setSelectedSummary(selectedSummary === index ? null : index);
-  };
 
   const generateCalendarDays = () => {
     const year = currentDate.getFullYear();
@@ -272,7 +268,6 @@ const Appointment = () => {
                 <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Referral</th>
                 <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Status</th>
                 <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Transcript</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Summary</th>
                 <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Audio</th>
               </tr>
             </thead>
@@ -337,14 +332,6 @@ const Appointment = () => {
                         {selectedTranscript === index ? "Close" : "View"}
                       </button>
                     </td>
-                    <td className="p-3 text-sm sm:text-base border border-[#DDDDDD]">
-                      <button
-                        onClick={() => toggleSummary(index)}
-                        className="px-2 py-1 rounded bg-green-500 text-white hover:bg-green-600 transition duration-200"
-                      >
-                        {selectedSummary === index ? "Close" : "View"}
-                      </button>
-                    </td>
                     <td className="py-3 text-sm sm:text-base border border-[#DDDDDD]">
                       <div className="flex justify-start items-start gap-2">
                         <audio controls className="h-8 w-32">
@@ -360,28 +347,21 @@ const Appointment = () => {
                     <tr key={`transcript-${index}`}>
                       <td colSpan="15" className="bg-gray-50 p-4 border border-[#DDDDDD]">
                         <div className="space-y-3">
-                          <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Transcript Details</h3>
-                          </div>
-                          <div className="bg-white p-4 rounded-lg shadow">
-                            <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line">
-                              {conversation.transcript}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                  {selectedSummary === index && (
-                    <tr key={`summary-${index}`}>
-                      <td colSpan="15" className="bg-gray-50 p-4 border border-[#DDDDDD]">
-                        <div className="space-y-3">
                           <div className="flex justify-between items-center mb-2">
                             <h3 className="text-lg font-semibold">Summary Details</h3>
                           </div>
-                          <div className="bg-white p-4 rounded-lg shadow">
-                            <p className="text-xs sm:text-sm text-gray-600 whitespace-pre-line">
+                          <div className="bg-white pb-4 rounded-lg shadow">
+                          <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
                               {conversation.summary}
+                            </p>
+                          </div>
+
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="text-lg font-semibold">Transcript Details</h3>
+                          </div>
+                          <div className="bg-white rounded-lg shadow">
+                          <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
+                              {conversation.transcript}
                             </p>
                           </div>
                         </div>
