@@ -8,8 +8,8 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const phoneNumber = "+19205480657";
-  const formattedPhoneNumber = "+1(920)548-0657";
+  const phoneNumber = "+18587712902";
+  const formattedPhoneNumber = "+1(858)771-2902";
 
   const handleCallClick = async () => {
     if (isMobile) {
