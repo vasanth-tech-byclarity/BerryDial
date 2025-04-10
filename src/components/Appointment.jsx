@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { FaCircleUser, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { FaVolumeMute, FaCalendar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { apiEndpoints } from "../utils/constants";
 
 const Appointment = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [showCalendar, setShowCalendar] = useState(false);
+  // const [currentDate, setCurrentDate] = useState(new Date());
+  // const [showCalendar, setShowCalendar] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [selectedTranscript, setSelectedTranscript] = useState(null);
   const [appointmentStatuses, setAppointmentStatuses] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [audioAvailability, setAudioAvailability] = useState({});
   const rowsPerPage = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const conversationsResponse = await fetch(
-          "/conversations"
-        );
+        const conversationsResponse = await fetch(apiEndpoints.conversations);
         if (!conversationsResponse.ok)
           throw new Error("Failed to fetch conversations");
         const conversationsData = await conversationsResponse.json();
@@ -30,21 +27,21 @@ const Appointment = () => {
         const audioStatus = {};
         for (const conv of conversationsData.conversations || []) {
           try {
-            const audioResponse = await fetch(`/audio/${conv.conversation_id}`);
+            const audioResponse = await fetch(
+              `${apiEndpoints.audio}/${conv.conversation_id}`
+            );
             audioStatus[conv.conversation_id] = audioResponse.ok;
             // console.log(audioStatus);
           } catch (error) {
+            console.error("Error fetching audio:", error);
             audioStatus[conv.conversation_id] = false;
           }
         }
-        setAudioAvailability(audioStatus);
 
         setConversations(conversationsData.conversations || []);
         setFilteredConversations(conversationsData.conversations || []);
 
-        const appointmentsResponse = await fetch(
-          "/appointment"
-        );
+        const appointmentsResponse = await fetch(apiEndpoints.appointment);
         if (!appointmentsResponse.ok)
           throw new Error("Failed to fetch appointments");
         const appointmentsData = await appointmentsResponse.json();
@@ -56,7 +53,7 @@ const Appointment = () => {
         });
         setAppointmentStatuses(statusMap);
       } catch (error) {
-        // console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -71,7 +68,7 @@ const Appointment = () => {
         !calendar.contains(event.target) &&
         !event.target.closest(".calendar-trigger")
       ) {
-        setShowCalendar(false);
+        // setShowCalendar(false);
       }
     };
 
@@ -96,72 +93,12 @@ const Appointment = () => {
     setCurrentPage(1); // Reset to first page when search changes
   }, [searchTerm, conversations]);
 
-  const toggleCalendar = () => {
-    setShowCalendar(!showCalendar);
-  };
-
-  const updateCurrentDateDisplay = () => {
-    return currentDate.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
-  const handlePrevMonth = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(prev.getMonth() - 1);
-      return newDate;
-    });
-  };
-
-  const handleNextMonth = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev);
-      newDate.setMonth(prev.getMonth() + 1);
-      return newDate;
-    });
-  };
+  // const toggleCalendar = () => {
+  //   setShowCalendar(!showCalendar);
+  // };
 
   const toggleTranscript = (index) => {
     setSelectedTranscript(selectedTranscript === index ? null : index);
-  };
-
-
-  const generateCalendarDays = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const days = [];
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="text-center py-2"></div>);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(
-        <div
-          key={day}
-          className={`text-center py-2 hover:bg-gray-100 cursor-pointer rounded ${
-            day === currentDate.getDate() &&
-            month === currentDate.getMonth() &&
-            year === currentDate.getFullYear()
-              ? "bg-blue-100"
-              : ""
-          }`}
-          onClick={() => {
-            setCurrentDate(new Date(year, month, day));
-            setShowCalendar(false);
-          }}
-        >
-          {day}
-        </div>
-      );
-    }
-
-    return days;
   };
 
   // Pagination handlers
@@ -241,8 +178,8 @@ const Appointment = () => {
           </p>
           {filteredConversations.length === 0 && searchTerm && (
             <p className="text-gray-600 text-sm sm:text-lg mt-2">
-              No appointments found matching "{searchTerm}". Please try a
-              different search term.
+              No appointments found matching &quot;{searchTerm}&quot;. Please
+              try a different search term.
             </p>
           )}
         </div>
@@ -252,21 +189,51 @@ const Appointment = () => {
           <table className="w-full table-auto border-collapse">
             <thead className="bg-[#F9F9FB] text-gray-600">
               <tr>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Name</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Phone</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Mail</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Reason</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Gender</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Age</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">City</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Zip</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">History</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Date</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Time</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Referral</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Status</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Transcript</th>
-                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">Audio</th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Name
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Phone
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Mail
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Reason
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Gender
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Age
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  City
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Zip
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  History
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Date
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Time
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Referral
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Status
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Transcript
+                </th>
+                <th className="p-3 text-left text-xs sm:text-lg border border-[#DDDDDD]">
+                  Audio
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -334,7 +301,7 @@ const Appointment = () => {
                       <div className="flex justify-start items-start gap-2">
                         <audio controls className="h-8 w-32">
                           <source
-                            src={`/audio/${conversation.conversation_id}`}
+                            src={`${apiEndpoints.audio}/${conversation.conversation_id}`}
                             type="audio/mpeg"
                           />
                         </audio>
@@ -343,22 +310,29 @@ const Appointment = () => {
                   </tr>
                   {selectedTranscript === index && (
                     <tr key={`transcript-${index}`}>
-                      <td colSpan="15" className="bg-gray-50 p-4 border border-[#DDDDDD]">
+                      <td
+                        colSpan="15"
+                        className="bg-gray-50 p-4 border border-[#DDDDDD]"
+                      >
                         <div className="space-y-3">
                           <div className="flex justify-between items-center mb-2">
-                            <h3 className="text-lg font-semibold">Summary Details</h3>
+                            <h3 className="text-lg font-semibold">
+                              Summary Details
+                            </h3>
                           </div>
                           <div className="bg-white pb-4 rounded-lg">
-                          <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
+                            <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
                               {conversation.summary}
                             </p>
                           </div>
 
                           <div className="flex justify-between items-center mb-2">
-                            <h3 className="text-lg font-semibold">Transcript Details</h3>
+                            <h3 className="text-lg font-semibold">
+                              Transcript Details
+                            </h3>
                           </div>
                           <div className="bg-white rounded-lg shadow">
-                          <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
+                            <p className="text-base sm:text-lg text-gray-600 whitespace-pre-line">
                               {conversation.transcript}
                             </p>
                           </div>

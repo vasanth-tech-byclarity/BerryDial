@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiEndpoints, zoomUrl, orthoBerryUrl } from "../utils/constants";
 
 const LandingPage = () => {
   const [isCallInProgress, setIsCallInProgress] = useState(false);
@@ -8,8 +9,8 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const phoneNumber = "+18587712902";
-  const formattedPhoneNumber = "+1(858)771-2902";
+  const phoneNumber = import.meta.env.VITE_APP_PHONE_NUMBER;
+  const formattedPhoneNumber = import.meta.env.VITE_APP_FORMATTED_PHONE_NUMBER;
 
   const handleCallClick = async () => {
     if (isMobile) {
@@ -31,21 +32,21 @@ const LandingPage = () => {
 
         // Make sure to use HTTPS for production
         const response = await axios.post(
-          "https://15.207.173.143/twilio/inbound_call",
+          `${apiEndpoints.twilioInboundCall}`,
           {},
           {
             headers: {
-              'Content-Type': 'application/json'
+              "Content-Type": "application/json",
             },
-            timeout: 10000 // 10 second timeout
+            timeout: 10000, // 10 second timeout
           }
         );
 
         if (response.status === 200 && response.data) {
           setCallStatus("Connecting your call...");
           // Wait for 2 seconds to show the connecting message
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
           // Handle the successful call initiation
           if (response.data.message) {
             setCallStatus(response.data.message);
@@ -59,13 +60,19 @@ const LandingPage = () => {
         console.error("Error initiating call:", error);
         if (error.response) {
           // Server responded with error
-          setCallStatus(`Call failed: ${error.response.data.message || 'Server error'}`);
+          setCallStatus(
+            `Call failed: ${error.response.data.message || "Server error"}`
+          );
         } else if (error.request) {
           // Request made but no response
-          setCallStatus("Call failed: No response from server. Please try again.");
+          setCallStatus(
+            "Call failed: No response from server. Please try again."
+          );
         } else {
           // Other errors
-          setCallStatus("Call failed. Please check your connection and try again.");
+          setCallStatus(
+            "Call failed. Please check your connection and try again."
+          );
         }
       } finally {
         setIsCallInProgress(false);
@@ -81,7 +88,7 @@ const LandingPage = () => {
           window.location.href = `msteams:/l/call/0/${phoneNumber}`;
           break;
         case "2":
-          window.location.href = "https://zoom.us";
+          window.location.href = `${zoomUrl}`;
           break;
         case "3":
           window.location.href = `skype:${phoneNumber}?call`;
@@ -118,9 +125,7 @@ const LandingPage = () => {
           </div>
           <button
             className="px-4 sm:px-6 py-2 sm:py-3 bg-black text-white text-xs sm:text-sm md:text-base font-medium rounded-md shadow-lg hover:bg-gray-800 transition-all duration-300 ease-in-out"
-            onClick={() =>
-              (window.location.href = "https://www.orthoberry.com/")
-            }
+            onClick={() => (window.location.href = orthoBerryUrl)}
           >
             Reach Us
           </button>
