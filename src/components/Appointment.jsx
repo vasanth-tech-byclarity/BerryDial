@@ -30,7 +30,11 @@ const Appointment = () => {
             const audioResponse = await fetch(
               `${apiEndpoints.audio}/${conv.conversation_id}`
             );
-            audioStatus[conv.conversation_id] = audioResponse.ok;
+            if (audioResponse.status === 404) {
+              audioStatus[conv.conversation_id] = false;
+            } else {
+              audioStatus[conv.conversation_id] = true;
+            }
             // console.log(audioStatus);
           } catch (error) {
             console.error("Error fetching audio:", error);
